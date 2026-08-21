@@ -302,8 +302,9 @@ input::placeholder { color: var(--text-faint); }
   z-index: 2;
   pointer-events: none;
   background:
-    radial-gradient(120% 90% at 70% 30%, rgba(192, 112, 60, 0.10), transparent 60%),
-    linear-gradient(to top, rgba(10, 10, 11, 0.96) 4%, rgba(10, 10, 11, 0.35) 46%, rgba(10, 10, 11, 0.55) 100%);
+    radial-gradient(120% 90% at 80% 26%, rgba(192, 112, 60, 0.10), transparent 55%),
+    linear-gradient(100deg, rgba(10, 10, 11, 0.97) 0%, rgba(10, 10, 11, 0.9) 32%, rgba(10, 10, 11, 0.45) 58%, transparent 78%),
+    linear-gradient(to top, rgba(10, 10, 11, 0.97) 4%, rgba(10, 10, 11, 0.55) 46%, rgba(10, 10, 11, 0.6) 100%);
 }
 
 .hero__content {

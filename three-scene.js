@@ -31,15 +31,20 @@
       if (window.THREE) return resolve(window.THREE);
       const t0 = Date.now();
       let retried = false;
+      const load = () => {
+        const s = document.createElement("script");
+        s.src = "https://unpkg.com/three@0.150.1/build/three.min.js";
+        s.onerror = () => {
+          if (!retried) {
+            retried = true;
+            setTimeout(load, 800);
+          }
+        };
+        document.head.appendChild(s);
+      };
+      load();
       const check = () => {
         if (window.THREE) return resolve(window.THREE);
-        if (!retried && Date.now() - t0 > 4000) {
-          retried = true;
-          const s = document.createElement("script");
-          s.src = "https://unpkg.com/three@0.150.1/build/three.min.js";
-          s.onerror = () => resolve(null);
-          document.head.appendChild(s);
-        }
         if (Date.now() - t0 > timeoutMs) return resolve(null);
         setTimeout(check, 90);
       };
@@ -65,28 +70,32 @@
     return "rgb(" + r + "," + g + "," + b + ")";
   }
 
-  function shingleTex(THREE, base, alt) {
+  function shingleTex(THREE, base, alt, renderer) {
+    const SZ = 1024;
     const c = document.createElement("canvas");
-    c.width = 512;
-    c.height = 512;
+    c.width = SZ;
+    c.height = SZ;
     const x = c.getContext("2d");
     x.fillStyle = base;
-    x.fillRect(0, 0, 512, 512);
-    const rows = 12,
-      rh = 512 / rows,
-      tw = 512 / 8;
+    x.fillRect(0, 0, SZ, SZ);
+    const rows = 20,
+      rh = SZ / rows,
+      tw = SZ / 12;
     for (let r = 0; r < rows; r++) {
       const off = (r % 2) * (tw / 2);
-      for (let i = -1; i < 9; i++) {
+      for (let i = -1; i < 13; i++) {
         const v = 0.82 + Math.random() * 0.36;
         x.fillStyle = i % 2 ? shade(base, v) : shade(alt, v);
         x.fillRect(i * tw + off + 1, r * rh + 1, tw - 2, rh - 3);
+        x.fillStyle = "rgba(255,255,255,0.05)";
+        x.fillRect(i * tw + off + 1, r * rh + 1, tw - 2, 1.5);
       }
-      x.fillStyle = "rgba(0,0,0,0.5)";
-      x.fillRect(0, r * rh + rh - 3, 512, 3);
+      x.fillStyle = "rgba(0,0,0,0.55)";
+      x.fillRect(0, r * rh + rh - 3, SZ, 3);
     }
     const t = new THREE.CanvasTexture(c);
     t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.anisotropy = renderer ? renderer.capabilities.getMaxAnisotropy() : 8;
     return t;
   }
 
@@ -163,9 +172,9 @@
     door.position.set(0.62, 0.63, 1.57);
     g.add(door);
 
-    const ground = new THREE.Mesh(new THREE.CircleGeometry(16, 48), new THREE.MeshStandardMaterial({ color: 0x121212, roughness: 1 }));
+    const ground = new THREE.Mesh(new THREE.CircleGeometry(10, 48), new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 1 }));
     ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -0.001;
+    ground.position.y = -0.02;
     ground.receiveShadow = true;
     g.add(ground);
     return g;
@@ -235,11 +244,11 @@
   function initHero(THREE) {
     const ctx = makeRenderer(THREE, heroCanvas, true);
     addLights(THREE, ctx.scene, false);
-    ctx.cam.position.set(6.4, 3.4, 8.6);
-    ctx.cam.lookAt(0, 0.4, 0);
-    ctx.scene.fog = new THREE.Fog(0x0a0a0b, 14, 34);
+    ctx.cam.position.set(9.6, 4.3, 12.8);
+    ctx.cam.lookAt(-6.4, 0.0, 0);
+    ctx.scene.fog = new THREE.Fog(0x0a0a0b, 16, 38);
 
-    const tex = shingleTex(THREE, "#4a4340", "#332e2b");
+    const tex = shingleTex(THREE, "#4a4340", "#332e2b", ctx.renderer);
     const house = buildHouse(THREE, tex);
     const pivot = new THREE.Group();
     pivot.add(house);
@@ -248,7 +257,7 @@
 
     const floaters = new THREE.Group();
     const n = mobile ? 5 : 11;
-    const shTex = shingleTex(THREE, "#5a4f47", "#3a332e");
+    const shTex = shingleTex(THREE, "#5a4f47", "#3a332e", ctx.renderer);
     const metal = new THREE.MeshStandardMaterial({ color: 0xbcc2c8, metalness: 1, roughness: 0.28 });
     const blue = new THREE.MeshBasicMaterial({ color: 0x4b6f92, transparent: true, opacity: 0.34, side: THREE.DoubleSide });
     for (let i = 0; i < n; i++) {
@@ -266,7 +275,7 @@
       } else {
         m = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.62), blue);
       }
-      m.position.set((Math.random() - 0.5) * 13, 0.6 + Math.random() * 5.6, (Math.random() - 0.5) * 8 + 1);
+      m.position.set(Math.random() * 6.5 + 0.6, 0.8 + Math.random() * 5.2, (Math.random() - 0.5) * 5 + 0.5);
       m.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3);
       m.userData = { s: 0.25 + Math.random() * 0.7, p: Math.random() * 6.28, y0: m.position.y, rx: (Math.random() - 0.5) * 0.006, ry: (Math.random() - 0.5) * 0.008 };
       floaters.add(m);
@@ -299,7 +308,7 @@
 
   function initFinal(THREE) {
     const ctx = makeRenderer(THREE, finalCanvas, true);
-    const tex = shingleTex(THREE, "#57483d", "#3a2f28");
+    const tex = shingleTex(THREE, "#57483d", "#3a2f28", ctx.renderer);
     const house = buildHouse(THREE, tex);
     house.position.set(1.6, -1.6, 0);
     const pivot = new THREE.Group();
