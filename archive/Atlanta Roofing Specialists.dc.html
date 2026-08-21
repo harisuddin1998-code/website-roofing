@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #0a0a0b; color: #f2efea; font-family: Archivo, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: #c0703c; text-decoration: none; }
+  a:hover { color: #e79a5f; }
+  input, select, button, textarea { font-family: inherit; }
+  input::placeholder { color: #6c6660; }
+  @keyframes ars-spin { to { transform: rotate(360deg); } }
+  @keyframes ars-pulse { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+  @keyframes ars-marq { to { transform: translateX(-50%); } }
+</style>
+</helmet>
+
+<div style="position: relative; width: 100%; background: #0a0a0b; overflow: hidden;">
+
+  <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px clamp(16px, 4vw, 56px); background: rgba(10,10,11,0.62); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(255,255,255,0.07);">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div style="width: 34px; height: 34px; display: grid; place-items: center; background: #c0703c; color: #10100f; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 14px; letter-spacing: -0.5px;">A</div>
+      <div style="display: flex; flex-direction: column; line-height: 1.05;">
+        <span style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap;">Atlanta Roofing</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.28em; color: #8a8580; text-transform: uppercase; white-space: nowrap;">Specialists · est. 1993</span>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <a href="tel:+14045550193" style="display: none; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: #cfcac3; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.14); white-space: nowrap;" style-hover="border-color: #c0703c; color: #f2efea;">(404) 555-0193</a>
+      <a href="#estimate" style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; background: #c0703c; color: #14100d; padding: 13px 20px; font-weight: 500; white-space: nowrap;" style-hover="background: #e79a5f; color: #14100d;">Free Estimate</a>
+    </div>
+  </nav>
+
+  <!-- ░░ HERO ░░ -->
+  <section data-screen-label="Hero" style="position: relative; min-height: 100svh; display: flex; align-items: flex-end; padding: 120px clamp(16px, 4vw, 56px) clamp(40px, 6vh, 72px); isolation: isolate;">
+    <canvas id="ars-hero" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0;"></canvas>
+    <div style="position: absolute; inset: 0; z-index: 1; background: radial-gradient(120% 90% at 70% 30%, rgba(192,112,60,0.10), transparent 60%), linear-gradient(to top, rgba(10,10,11,0.96) 4%, rgba(10,10,11,0.35) 46%, rgba(10,10,11,0.55) 100%); pointer-events: none;"></div>
+
+    <div style="position: relative; z-index: 2; width: 100%; max-width: 1440px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px;">
+      <div style="display: flex; align-items: center; gap: 14px;" data-rv="1">
+        <span style="width: 40px; height: 1px; background: #c0703c;"></span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #c0703c;">Built above. Built to last.</span>
+      </div>
+
+      <h1 data-rv="1" style="margin: 0; max-width: 15ch; font-family: 'Archivo Black', Archivo, sans-serif; font-weight: 900; font-size: clamp(44px, 8.2vw, 132px); line-height: 0.9; letter-spacing: -0.035em; text-wrap: balance;">Your roof protects everything beneath it.</h1>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 36px; align-items: end;">
+        <p data-rv="1" style="margin: 0; max-width: 48ch; font-size: clamp(15px, 1.35vw, 19px); line-height: 1.6; color: #b6b0a8; text-wrap: pretty;">For over 30 years, Atlanta Roofing Specialists has protected Metro Atlanta homes and businesses through experience, craftsmanship, and detail-driven roofing.</p>
+        <div data-rv="1" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start;">
+          <a href="#estimate" style="display: inline-flex; align-items: center; gap: 12px; background: #c0703c; color: #14100d; padding: 20px clamp(20px, 2.2vw, 30px); font-family: 'JetBrains Mono', monospace; font-size: clamp(11px, 1.05vw, 12.5px); letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; white-space: nowrap;" style-hover="background: #e79a5f; transform: translateY(-2px);">Get my free estimate <span style="font-size: 15px;">→</span></a>
+          <a href="#craft" style="display: inline-flex; align-items: center; gap: 12px; color: #f2efea; padding: 20px clamp(18px, 2vw, 28px); border: 1px solid rgba(255,255,255,0.18); font-family: 'JetBrains Mono', monospace; font-size: clamp(11px, 1.05vw, 12.5px); letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap;" style-hover="border-color: #c0703c; color: #f2efea; background: rgba(192,112,60,0.08);">▶ Explore our craftsmanship</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="position: absolute; right: clamp(16px, 4vw, 56px); top: 50%; z-index: 2; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.24em; color: #6c6660; text-transform: uppercase; animation: ars-pulse 3.4s ease-in-out infinite;">
+      <span>Drag / move to orbit</span>
+      <span style="width: 1px; height: 54px; background: linear-gradient(to bottom, #c0703c, transparent);"></span>
+    </div>
+  </section>
+
+  <!-- ░░ TRUST STRIP ░░ -->
+  <section data-screen-label="Trust" style="position: relative; z-index: 3; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); background: #0d0d0e;">
+    <div style="max-width: 1440px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+      <div data-rv="1" style="padding: 40px clamp(18px, 2.5vw, 34px); border-right: 1px solid rgba(255,255,255,0.07);">
+        <div style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(30px, 3.2vw, 44px); line-height: 1; letter-spacing: -0.03em; color: #f2efea;">30+</div>
+        <div style="margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase; color: #8a8580;">Years experience</div>
+      </div>
+      <div data-rv="1" style="padding: 40px clamp(18px, 2.5vw, 34px); border-right: 1px solid rgba(255,255,255,0.07);">
+        <div style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(30px, 3.2vw, 44px); line-height: 1; letter-spacing: -0.03em; color: #f2efea;">1993</div>
+        <div style="margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase; color: #8a8580;">Protecting Metro Atlanta</div>
+      </div>
+      <div data-rv="1" style="padding: 40px clamp(18px, 2.5vw, 34px); border-right: 1px solid rgba(255,255,255,0.07);">
+        <div style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(22px, 2.2vw, 30px); line-height: 1.05; letter-spacing: -0.02em; color: #c0703c;">Hand-nailed</div>
+        <div style="margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase; color: #8a8580;">Craftsmanship</div>
+      </div>
+      <div data-rv="1" style="padding: 40px clamp(18px, 2.5vw, 34px); border-right: 1px solid rgba(255,255,255,0.07);">
+        <div style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(22px, 2.2vw, 30px); line-height: 1.05; letter-spacing: -0.02em; color: #f2efea;">Veteran-owned</div>
+        <div style="margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase; color: #8a8580;">Built on integrity</div>
+      </div>
+      <div data-rv="1" style="padding: 40px clamp(18px, 2.5vw, 34px);">
+        <div style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(22px, 2.2vw, 30px); line-height: 1.05; letter-spacing: -0.02em; color: #f2efea;">Up to 25 yrs</div>
+        <div style="margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase; color: #8a8580;">Workmanship protection</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ ROOF EXPLORATION ░░ -->
+  <section id="ars-roof-sec" data-screen-label="Roof anatomy" style="position: relative; background: #0a0a0b;">
+    <div style="position: sticky; top: 0; height: 100svh; overflow: hidden; background: radial-gradient(120% 90% at 50% 15%, rgba(192,112,60,0.12), transparent 62%), linear-gradient(180deg, #141110, #0a0a0b 60%);">
+      <canvas id="ars-roof" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block;"></canvas>
+      <div style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(90% 70% at 30% 40%, rgba(192,112,60,0.07), transparent 65%);"></div>
+
+      <div style="position: absolute; top: clamp(84px, 12vh, 130px); left: clamp(16px, 4vw, 56px); right: clamp(16px, 4vw, 56px); display: flex; flex-wrap: wrap; gap: 16px; align-items: baseline; justify-content: space-between;">
+        <h2 style="margin: 0; max-width: 18ch; font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(28px, 4.2vw, 62px); line-height: 0.95; letter-spacing: -0.03em;">Anatomy of a roof<br />built to last.</h2>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.26em; text-transform: uppercase; color: #6c6660;">Scroll to disassemble</span>
+      </div>
+
+      <div style="position: absolute; bottom: clamp(28px, 5vh, 64px); left: clamp(16px, 4vw, 56px); right: clamp(16px, 4vw, 56px); display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(10px);">
+        <div id="ars-layer-0" style="padding: 20px 22px; background: rgba(12,12,13,0.78); transition: background .5s, transform .5s;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.26em; color: #c0703c;">LAYER 01</div>
+          <div style="margin-top: 12px; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 21px; letter-spacing: -0.02em;">Shingles</div>
+          <p style="margin: 8px 0 0; font-size: 13.5px; line-height: 1.5; color: #97918a;">Protection against the elements.</p>
+        </div>
+        <div id="ars-layer-1" style="padding: 20px 22px; background: rgba(12,12,13,0.78); transition: background .5s, transform .5s;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.26em; color: #c0703c;">LAYER 02</div>
+          <div style="margin-top: 12px; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 21px; letter-spacing: -0.02em;">Underlayment</div>
+          <p style="margin: 8px 0 0; font-size: 13.5px; line-height: 1.5; color: #97918a;">A critical layer of moisture protection.</p>
+        </div>
+        <div id="ars-layer-2" style="padding: 20px 22px; background: rgba(12,12,13,0.78); transition: background .5s, transform .5s;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.26em; color: #c0703c;">LAYER 03</div>
+          <div style="margin-top: 12px; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 21px; letter-spacing: -0.02em;">Decking</div>
+          <p style="margin: 8px 0 0; font-size: 13.5px; line-height: 1.5; color: #97918a;">The structural foundation beneath the roof.</p>
+        </div>
+        <div id="ars-layer-3" style="padding: 20px 22px; background: rgba(12,12,13,0.78); transition: background .5s, transform .5s;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.26em; color: #c0703c;">LAYER 04</div>
+          <div style="margin-top: 12px; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 21px; letter-spacing: -0.02em;">Precision installation</div>
+          <p style="margin: 8px 0 0; font-size: 13.5px; line-height: 1.5; color: #97918a;">Detail-driven craftsmanship for long-term performance.</p>
+        </div>
+      </div>
+    </div>
+    <div id="ars-roof-spacer" style="height: 90vh;"></div>
+  </section>
+
+  <!-- ░░ CRAFTSMANSHIP / NAIL ░░ -->
+  <section id="craft" data-screen-label="Craftsmanship" style="position: relative; background: #08080a; border-top: 1px solid rgba(255,255,255,0.07);">
+    <div id="ars-nail-sec" style="position: relative;">
+      <div style="position: sticky; top: 0; height: 100svh; display: grid; place-items: center; overflow: hidden; background: radial-gradient(90% 70% at 65% 40%, rgba(192,112,60,0.14), transparent 62%), linear-gradient(180deg, #0c0b0c, #08080a 60%);">
+        <canvas id="ars-nail" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block;"></canvas>
+        <div style="position: relative; text-align: center; padding: 0 clamp(16px, 5vw, 40px); pointer-events: none;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.3em; text-transform: uppercase; color: #c0703c;">Hand-nailed · not gun-driven</div>
+          <h2 style="margin: 22px auto 0; max-width: 20ch; font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(32px, 5.6vw, 88px); line-height: 0.92; letter-spacing: -0.035em;">We still believe in doing things right.</h2>
+        </div>
+      </div>
+      <div id="ars-nail-spacer" style="height: 70vh;"></div>
+    </div>
+
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 56px) clamp(90px, 12vh, 160px);">
+      <p data-rv="1" style="margin: 0 auto clamp(48px, 7vh, 84px); max-width: 62ch; text-align: center; font-size: clamp(16px, 1.5vw, 21px); line-height: 1.65; color: #b6b0a8; text-wrap: pretty;">While speed has become the priority for many contractors, craftsmanship remains ours. Our approach is built around precision, attention to detail, and decades of roofing experience.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; align-items: stretch;">
+        <div data-rv="1" style="padding: 34px 30px; border: 1px solid rgba(255,255,255,0.08); background: #0c0c0d;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: #6c6660;">The fast way</div>
+          <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
+            <span style="font-size: 22px; color: #74706b; font-weight: 600; letter-spacing: -0.01em;">Automated.</span>
+            <span style="font-size: 22px; color: #74706b; font-weight: 600; letter-spacing: -0.01em;">High-volume.</span>
+            <span style="font-size: 22px; color: #74706b; font-weight: 600; letter-spacing: -0.01em;">Speed-driven.</span>
+          </div>
+        </div>
+        <div data-rv="1" style="display: grid; place-items: center;">
+          <span style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(28px, 3vw, 40px); color: #2a2724; letter-spacing: -0.02em;">VS</span>
+        </div>
+        <div data-rv="1" style="padding: 34px 30px; border: 1px solid rgba(192,112,60,0.4); background: linear-gradient(160deg, rgba(192,112,60,0.14), rgba(12,12,13,0.9) 55%);">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: #c0703c;">The ARS way</div>
+          <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
+            <span style="font-size: 22px; color: #f2efea; font-weight: 700; letter-spacing: -0.01em;">Precision.</span>
+            <span style="font-size: 22px; color: #f2efea; font-weight: 700; letter-spacing: -0.01em;">Craftsmanship.</span>
+            <span style="font-size: 22px; color: #f2efea; font-weight: 700; letter-spacing: -0.01em;">Attention to detail.</span>
+          </div>
+        </div>
+      </div>
+
+      <div data-rv="1" style="margin-top: 44px; display: flex; justify-content: center;">
+        <a href="#estimate" style="display: inline-flex; align-items: center; gap: 12px; color: #f2efea; padding: 19px clamp(18px, 2vw, 30px); border: 1px solid rgba(255,255,255,0.2); font-family: 'JetBrains Mono', monospace; font-size: clamp(10.5px, 1vw, 12px); letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap;" style-hover="border-color: #c0703c; background: rgba(192,112,60,0.1);">Discover the difference <span>→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ SERVICES ░░ -->
+  <section data-screen-label="Services" style="position: relative; background: #0d0d0e; border-top: 1px solid rgba(255,255,255,0.07); padding: clamp(80px, 11vh, 150px) 0;">
+    <div style="max-width: 1440px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 56px); display: flex; flex-wrap: wrap; gap: 18px; align-items: baseline; justify-content: space-between;">
+      <h2 data-rv="1" style="margin: 0; max-width: 16ch; font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(30px, 4.4vw, 64px); line-height: 0.94; letter-spacing: -0.03em;">What we do, above you.</h2>
+      <span data-rv="1" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.26em; text-transform: uppercase; color: #6c6660;">05 core services · scroll →</span>
+    </div>
+
+    <div style="margin-top: clamp(36px, 5vh, 60px); display: flex; gap: 18px; overflow-x: auto; padding: 8px clamp(16px, 4vw, 56px) 26px; scroll-snap-type: x mandatory;">
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="5">
+        <article style="position: relative; flex: 0 0 auto; width: min(78vw, 340px); min-height: 430px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(180deg, #131314, #0b0b0c); border: 1px solid rgba(255,255,255,0.08); scroll-snap-align: start; transition: transform .5s cubic-bezier(.2,.8,.2,1), border-color .5s, box-shadow .5s;" style-hover="transform: translateY(-10px); border-color: rgba(192,112,60,0.55); box-shadow: 0 30px 60px -30px rgba(0,0,0,0.9);">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.26em; color: #c0703c;">{{ s.num }}</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #6c6660;">{{ s.tag }}</span>
+          </div>
+          <div style="height: 150px; display: grid; place-items: center; perspective: 700px;">
+            <div style="width: 108px; height: 108px; transform-style: preserve-3d; transform: rotateX(58deg) rotateZ(42deg); transition: transform 1s cubic-bezier(.2,.8,.2,1);">
+              <div style="position: absolute; inset: 0; background: #c0703c; opacity: .92; transform: translateZ(16px);"></div>
+              <div style="position: absolute; inset: 0; background: #7d4726; transform: translateZ(8px) scale(1.06);"></div>
+              <div style="position: absolute; inset: 0; background: #2b2724; transform: translateZ(0px) scale(1.12);"></div>
+              <div style="position: absolute; inset: 0; border: 1px solid rgba(255,255,255,0.18); transform: translateZ(-9px) scale(1.18);"></div>
+            </div>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 25px; line-height: 1.02; letter-spacing: -0.025em;">{{ s.title }}</h3>
+            <p style="margin: 12px 0 0; font-size: 13.5px; line-height: 1.55; color: #97918a; text-wrap: pretty;">{{ s.body }}</p>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ░░ PROJECT IMPACT ░░ -->
+  <section data-screen-label="Before after" style="position: relative; background: #0a0a0b; padding: clamp(80px, 11vh, 150px) clamp(16px, 4vw, 56px);">
+    <div style="max-width: 1280px; margin: 0 auto;">
+      <h2 data-rv="1" style="margin: 0 0 18px; max-width: 18ch; font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(32px, 5vw, 76px); line-height: 0.92; letter-spacing: -0.035em;">The difference is above you.</h2>
+      <p data-rv="1" style="margin: 0 0 clamp(34px, 5vh, 54px); max-width: 56ch; font-size: clamp(15px, 1.4vw, 19px); line-height: 1.6; color: #b6b0a8; text-wrap: pretty;">A roof isn't just a layer of protection. It's one of the most important investments in your property.</p>
+
+      <div id="ars-ba" style="position: relative; aspect-ratio: 16 / 9; min-height: 300px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: ew-resize; user-select: none; touch-action: none;">
+        <div style="position: absolute; inset: 0; background: repeating-linear-gradient(135deg, #1b1a19 0 14px, #131211 14px 28px); display: grid; place-items: center;">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #6c6660;">[ after — completed roof photo ]</span>
+        </div>
+        <div id="ars-ba-clip" style="position: absolute; inset: 0; width: 50%; overflow: hidden; border-right: 1px solid rgba(255,255,255,0.5);">
+          <div style="position: absolute; inset: 0; width: 100vw; max-width: 1280px; background: repeating-linear-gradient(135deg, #14100e 0 14px, #0e0c0b 14px 28px); display: grid; place-items: center;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #5c5651;">[ before — aging roof photo ]</span>
+          </div>
+        </div>
+        <div id="ars-ba-handle" style="position: absolute; top: 0; bottom: 0; left: 50%; width: 44px; margin-left: -22px; display: grid; place-items: center; pointer-events: none;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: #c0703c; color: #14100d; display: grid; place-items: center; font-size: 15px; font-weight: 700; box-shadow: 0 0 0 8px rgba(192,112,60,0.16);">⇄</div>
+        </div>
+        <div style="position: absolute; top: 18px; left: 18px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: #8a8580;">Before</div>
+        <div style="position: absolute; top: 18px; right: 18px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: #c0703c;">After</div>
+      </div>
+
+      <div data-rv="1" style="margin-top: 34px; display: flex;">
+        <a href="#estimate" style="display: inline-flex; align-items: center; gap: 12px; background: #c0703c; color: #14100d; padding: 19px clamp(18px, 2vw, 30px); font-family: 'JetBrains Mono', monospace; font-size: clamp(10.5px, 1vw, 12px); letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; white-space: nowrap;" style-hover="background: #e79a5f;">Get my free roof assessment <span>→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ SOCIAL PROOF ░░ -->
+  <section data-screen-label="Testimonials" style="position: relative; background: #0d0d0e; border-top: 1px solid rgba(255,255,255,0.07); padding: clamp(80px, 11vh, 150px) clamp(16px, 4vw, 56px); overflow: hidden;">
+    <div style="position: absolute; top: -80px; right: -60px; width: 460px; height: 460px; border: 1px solid rgba(192,112,60,0.16); transform: rotate(45deg); pointer-events: none;"></div>
+    <div style="position: absolute; top: 40px; right: 60px; width: 260px; height: 260px; border: 1px solid rgba(255,255,255,0.05); transform: rotate(45deg); animation: ars-spin 90s linear infinite; pointer-events: none;"></div>
+    <div style="position: relative; max-width: 1280px; margin: 0 auto;">
+      <span data-rv="1" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.28em; text-transform: uppercase; color: #c0703c;">Metro Atlanta says</span>
+      <div style="margin-top: clamp(36px, 5vh, 56px); display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08);">
+        <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
+          <figure data-rv="1" style="margin: 0; padding: 38px 32px; background: #0b0b0c; display: flex; flex-direction: column; gap: 22px;">
+            <div style="color: #c0703c; letter-spacing: 3px; font-size: 13px;">★★★★★</div>
+            <blockquote style="margin: 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: clamp(20px, 2vw, 27px); line-height: 1.28; letter-spacing: -0.02em; color: #f2efea; text-wrap: pretty;">“{{ t.quote }}”</blockquote>
+            <figcaption style="margin-top: auto; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8580; line-height: 1.8;">{{ t.name }}<br /><span style="color: #5c5651;">{{ t.role }}</span></figcaption>
+          </figure>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ PROCESS ░░ -->
+  <section data-screen-label="Process" style="position: relative; background: #0a0a0b; padding: clamp(80px, 11vh, 150px) clamp(16px, 4vw, 56px);">
+    <div style="max-width: 1280px; margin: 0 auto;">
+      <h2 data-rv="1" style="margin: 0 0 clamp(44px, 6vh, 76px); max-width: 16ch; font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(32px, 5vw, 76px); line-height: 0.92; letter-spacing: -0.035em;">A better roofing experience.</h2>
+      <div id="ars-proc" style="position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 28px;">
+        <div style="position: absolute; top: 13px; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.1);"></div>
+        <div id="ars-proc-line" style="position: absolute; top: 13px; left: 0; width: 0%; height: 1px; background: #c0703c; box-shadow: 0 0 18px 2px rgba(192,112,60,0.6); transition: width 1.2s cubic-bezier(.2,.8,.2,1);"></div>
+        <sc-for list="{{ steps }}" as="p" hint-placeholder-count="4">
+          <div data-rv="1" style="position: relative; padding-top: 44px;">
+            <span style="position: absolute; top: 7px; left: 0; width: 13px; height: 13px; background: #0a0a0b; border: 1px solid #c0703c;"></span>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.26em; color: #c0703c;">{{ p.num }}</div>
+            <h3 style="margin: 14px 0 10px; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 24px; letter-spacing: -0.025em;">{{ p.title }}</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #97918a; max-width: 30ch; text-wrap: pretty;">{{ p.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ EMERGENCY ░░ -->
+  <section data-screen-label="Emergency" style="position: relative; background: #070708; border-top: 1px solid rgba(255,255,255,0.07); padding: clamp(90px, 13vh, 170px) clamp(16px, 4vw, 56px); overflow: hidden;">
+    <canvas id="ars-rain" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0.55;"></canvas>
+    <div style="position: absolute; inset: 0; background: radial-gradient(70% 60% at 50% 100%, rgba(192,112,60,0.14), transparent 70%); pointer-events: none;"></div>
+    <div style="position: relative; max-width: 900px; margin: 0 auto; text-align: center;">
+      <span data-rv="1" style="display: inline-flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.28em; text-transform: uppercase; color: #e79a5f;"><span style="width: 8px; height: 8px; background: #e05a3a; border-radius: 50%; animation: ars-pulse 1.4s ease-in-out infinite;"></span>24/7 response</span>
+      <h2 data-rv="1" style="margin: 24px 0 16px; font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(38px, 7vw, 108px); line-height: 0.9; letter-spacing: -0.04em;">Roof emergency?</h2>
+      <p data-rv="1" style="margin: 0 auto 12px; max-width: 40ch; font-size: clamp(17px, 1.7vw, 23px); font-weight: 600; color: #f2efea;">Don't wait for the damage to get worse.</p>
+      <p data-rv="1" style="margin: 0 auto 38px; max-width: 48ch; font-size: 15.5px; line-height: 1.6; color: #b6b0a8;">Emergency roofing assistance is available when you need help most.</p>
+      <a href="tel:+14045550193" data-rv="1" style="display: inline-flex; align-items: center; gap: 14px; background: #e05a3a; color: #140c09; padding: 22px clamp(20px, 2.4vw, 34px); font-family: 'JetBrains Mono', monospace; font-size: clamp(11px, 1.1vw, 13px); letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; white-space: nowrap;" style-hover="background: #f2764f;">🚨 Call for emergency service</a>
+    </div>
+  </section>
+
+  <!-- ░░ FINAL CONVERSION ░░ -->
+  <section id="estimate" data-screen-label="Estimate" style="position: relative; background: #0a0a0b; border-top: 1px solid rgba(255,255,255,0.07); min-height: 100svh; display: flex; align-items: center; padding: clamp(90px, 12vh, 150px) clamp(16px, 4vw, 56px) clamp(120px, 14vh, 170px); overflow: hidden;">
+    <canvas id="ars-final" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block;"></canvas>
+    <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,10,11,0.94) 20%, rgba(10,10,11,0.42) 70%); pointer-events: none;"></div>
+
+    <div style="position: relative; width: 100%; max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: clamp(40px, 6vw, 90px); align-items: center;">
+      <div>
+        <span data-rv="1" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.28em; text-transform: uppercase; color: #c0703c;">Free · no obligation</span>
+        <h2 data-rv="1" style="margin: 22px 0 20px; max-width: 17ch; font-family: 'Archivo Black', Archivo, sans-serif; font-size: clamp(34px, 5.2vw, 82px); line-height: 0.9; letter-spacing: -0.038em;">Your home deserves a roof built to last.</h2>
+        <p data-rv="1" style="margin: 0; max-width: 44ch; font-size: clamp(15px, 1.4vw, 19px); line-height: 1.6; color: #b6b0a8;">Get expert guidance from a roofing team backed by over 30 years of experience.</p>
+      </div>
+
+      <div data-rv="1" style="padding: clamp(26px, 3vw, 40px); background: rgba(15,15,16,0.82); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(14px);">
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ onSubmit }}" style="display: flex; flex-direction: column; gap: 14px;">
+            <label style="display: flex; flex-direction: column; gap: 8px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #8a8580;">Name</span>
+              <input required="required" type="text" placeholder="Jordan Whitfield" style="background: #0a0a0b; border: 1px solid rgba(255,255,255,0.14); color: #f2efea; padding: 15px 16px; font-size: 15px; outline: none;" style-focus="border-color: #c0703c;" />
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 8px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #8a8580;">Phone number</span>
+              <input required="required" type="tel" placeholder="(404) 555-0193" style="background: #0a0a0b; border: 1px solid rgba(255,255,255,0.14); color: #f2efea; padding: 15px 16px; font-size: 15px; outline: none;" style-focus="border-color: #c0703c;" />
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 8px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #8a8580;">Email</span>
+              <input required="required" type="email" placeholder="you@email.com" style="background: #0a0a0b; border: 1px solid rgba(255,255,255,0.14); color: #f2efea; padding: 15px 16px; font-size: 15px; outline: none;" style-focus="border-color: #c0703c;" />
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 8px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #8a8580;">What do you need help with?</span>
+              <select style="background: #0a0a0b; border: 1px solid rgba(255,255,255,0.14); color: #f2efea; padding: 15px 16px; font-size: 15px; outline: none; appearance: none;" style-focus="border-color: #c0703c;">
+                <option>Roof Repair</option>
+                <option>Roof Replacement</option>
+                <option>Roof Inspection</option>
+                <option>Commercial Roofing</option>
+                <option>Emergency Roofing</option>
+              </select>
+            </label>
+            <button type="submit" style="margin-top: 8px; background: #c0703c; color: #14100d; border: none; padding: 21px 24px; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 16px; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer;" style-hover="background: #e79a5f;">Get my free estimate</button>
+            <p style="margin: 6px 0 0; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #6c6660;">No obligation. No pressure. Just expert guidance.</p>
+          </form>
+        </sc-if>
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 16px; padding: 30px 0; text-align: center;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.26em; text-transform: uppercase; color: #c0703c;">Request received</span>
+            <h3 style="margin: 0; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 30px; line-height: 1.05; letter-spacing: -0.03em;">We'll call you within one business day.</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #b6b0a8;">Need help sooner? Call <a href="tel:+14045550193">(404) 555-0193</a> and ask for dispatch.</p>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <footer style="position: relative; background: #08080a; border-top: 1px solid rgba(255,255,255,0.07); padding: 42px clamp(16px, 4vw, 56px) 110px;">
+    <div style="max-width: 1320px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #6c6660;">
+      <span>Atlanta Roofing Specialists · Built above. Built to last.</span>
+      <span>Metro Atlanta · Licensed &amp; insured · Veteran-owned</span>
+    </div>
+  </footer>
+
+  <div id="ars-bar" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 70; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.12); border-top: 1px solid rgba(255,255,255,0.12);">
+    <a href="tel:+14045550193" style="display: grid; place-items: center; min-height: 60px; background: #101011; color: #f2efea; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;">Call now</a>
+    <a href="#estimate" style="display: grid; place-items: center; min-height: 60px; background: #c0703c; color: #14100d; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;">Free estimate</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { submitted: false };
+
+  renderVals() {
+    return {
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      onSubmit: (e) => { e.preventDefault(); this.setState({ submitted: true }); },
+      services: [
+        { num: "01", tag: "Full tear-off", title: "Roof Replacement", body: "Complete removal and rebuild with hand-nailed installation and documented workmanship." },
+        { num: "02", tag: "Targeted fix", title: "Roof Repair", body: "Leak diagnosis, flashing correction, and storm damage repair done right the first time." },
+        { num: "03", tag: "Homes", title: "Residential Roofing", body: "Architectural shingle systems engineered for Georgia heat, wind, and summer storms." },
+        { num: "04", tag: "Property", title: "Commercial Roofing", body: "Low-slope and flat roof systems for property managers, retail, and light industrial." },
+        { num: "05", tag: "24/7", title: "Emergency Roofing", body: "Rapid tarping, water intrusion control, and stabilization when the weather won't wait." }
+      ],
+      testimonials: [
+        { quote: "Professional, knowledgeable, and incredibly thorough.", name: "Marcus D.", role: "Metro Atlanta Homeowner" },
+        { quote: "They hand-nailed every shingle and walked me through all of it.", name: "Priya S.", role: "Decatur Homeowner" },
+        { quote: "Thirty years of experience shows in the details.", name: "Ellen R.", role: "Marietta Property Manager" }
+      ],
+      steps: [
+        { num: "01", title: "Inspect", body: "We understand the condition of your roof." },
+        { num: "02", title: "Recommend", body: "We provide a clear and honest recommendation." },
+        { num: "03", title: "Build", body: "Experienced professionals complete the work." },
+        { num: "04", title: "Protect", body: "Your home is ready for what comes next." }
+      ]
+    };
+  }
+
+  componentDidMount() {
+    this._loops = [];
+    this._scroll = [];
+    this._dead = false;
+    this.mobile = window.matchMedia("(max-width: 780px)").matches;
+    this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    this.mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+    this.initReveals();
+    this.initBeforeAfter();
+    this.initRain();
+    this.onMove = (e) => {
+      this.mouse.tx = (e.clientX / window.innerWidth) * 2 - 1;
+      this.mouse.ty = (e.clientY / window.innerHeight) * 2 - 1;
+    };
+    window.addEventListener("pointermove", this.onMove, { passive: true });
+    this.onScroll = () => { for (const f of this._scroll) f(); };
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    window.addEventListener("resize", this.onScroll, { passive: true });
+    if (this.hasWebGL()) {
+      this.waitThree().then((T) => { if (!this._dead) { if (T) this.init3D(T); else this.collapse3DSpacers(); } });
+    } else {
+      this.collapse3DSpacers();
+    }
+    this.hideNavPhone();
+  }
+
+  hasWebGL() {
+    try {
+      const c = document.createElement("canvas");
+      return !!(c.getContext("webgl") || c.getContext("experimental-webgl"));
+    } catch (e) { return false; }
+  }
+
+  collapse3DSpacers() {
+    const roofSp = document.getElementById("ars-roof-spacer");
+    const nailSp = document.getElementById("ars-nail-spacer");
+    if (roofSp) roofSp.style.height = "20vh";
+    if (nailSp) nailSp.style.height = "20vh";
+  }
+
+  componentWillUnmount() {
+    this._dead = true;
+    window.removeEventListener("pointermove", this.onMove);
+    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("resize", this.onScroll);
+    for (const l of this._loops) cancelAnimationFrame(l.id);
+  }
+
+  /* ---------- utilities ---------- */
+
+  waitThree() {
+    return new Promise((res) => {
+      const t0 = Date.now();
+      let retried = false;
+      const check = () => {
+        if (window.THREE) return res(window.THREE);
+        if (!retried && Date.now() - t0 > 4000) {
+          retried = true;
+          const s = document.createElement("script");
+          s.src = "https://unpkg.com/three@0.150.1/build/three.min.js";
+          document.head.appendChild(s);
+        }
+        if (Date.now() - t0 > 25000) return res(null);
+        setTimeout(check, 90);
+      };
+      check();
+    });
+  }
+
+  hideNavPhone() {
+    const a = document.querySelector('nav a[href^="tel:"]');
+    const apply = () => { if (a) a.style.display = window.innerWidth > 900 ? "block" : "none"; };
+    apply();
+    window.addEventListener("resize", apply, { passive: true });
+    const bar = document.getElementById("ars-bar");
+    const applyBar = () => { if (bar) bar.style.display = window.innerWidth > 900 ? "none" : "grid"; };
+    applyBar();
+    window.addEventListener("resize", applyBar, { passive: true });
+  }
+
+  initReveals() {
+    const els = Array.from(document.querySelectorAll("[data-rv]"));
+    els.forEach((el, i) => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(22px)";
+      el.style.transition = "opacity .9s cubic-bezier(.2,.8,.2,1) " + Math.min(i % 6, 5) * 70 + "ms, transform .9s cubic-bezier(.2,.8,.2,1) " + Math.min(i % 6, 5) * 70 + "ms";
+    });
+    const show = (el) => { el.style.opacity = "1"; el.style.transform = "none"; };
+    const inView = (el) => el.getBoundingClientRect().top < window.innerHeight * 1.05;
+    const pending = new Set(els);
+    const sweep = () => {
+      pending.forEach((el) => { if (inView(el)) { show(el); pending.delete(el); } });
+    };
+    requestAnimationFrame(sweep);
+    sweep();
+    if (!("IntersectionObserver" in window)) { els.forEach(show); return; }
+    const io = new IntersectionObserver((ents) => {
+      ents.forEach((en) => { if (en.isIntersecting) { show(en.target); pending.delete(en.target); io.unobserve(en.target); } });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.12 });
+    els.forEach((el) => io.observe(el));
+    this._scroll.push(sweep);
+
+    const proc = document.getElementById("ars-proc");
+    const line = document.getElementById("ars-proc-line");
+    if (proc && line) {
+      const io2 = new IntersectionObserver((ents) => {
+        if (ents[0].isIntersecting) { line.style.width = "100%"; io2.disconnect(); }
+      }, { threshold: 0.35 });
+      io2.observe(proc);
+    }
+  }
+
+  initBeforeAfter() {
+    const wrap = document.getElementById("ars-ba");
+    const clip = document.getElementById("ars-ba-clip");
+    const handle = document.getElementById("ars-ba-handle");
+    if (!wrap || !clip || !handle) return;
+    let dragging = false;
+    const set = (cx) => {
+      const r = wrap.getBoundingClientRect();
+      const p = Math.max(3, Math.min(97, ((cx - r.left) / r.width) * 100));
+      clip.style.width = p + "%";
+      handle.style.left = p + "%";
+    };
+    wrap.addEventListener("pointerdown", (e) => { dragging = true; set(e.clientX); });
+    window.addEventListener("pointerup", () => { dragging = false; });
+    window.addEventListener("pointermove", (e) => { if (dragging) set(e.clientX); }, { passive: true });
+    wrap.addEventListener("pointermove", (e) => { if (!dragging && !this.mobile) set(e.clientX); }, { passive: true });
+  }
+
+  initRain() {
+    const c = document.getElementById("ars-rain");
+    if (!c) return;
+    const ctx = c.getContext("2d");
+    let drops = [];
+    const fit = () => {
+      const r = c.getBoundingClientRect();
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      c.width = Math.max(1, r.width * dpr);
+      c.height = Math.max(1, r.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = this.mobile ? 60 : 170;
+      drops = Array.from({ length: n }, () => ({
+        x: Math.random() * r.width, y: Math.random() * r.height,
+        l: 8 + Math.random() * 22, v: 5 + Math.random() * 9, o: 0.15 + Math.random() * 0.5
+      }));
+      this.rainW = r.width; this.rainH = r.height;
+    };
+    fit();
+    window.addEventListener("resize", fit, { passive: true });
+    this.loop(c, () => {
+      ctx.clearRect(0, 0, this.rainW, this.rainH);
+      ctx.lineWidth = 1;
+      for (const d of drops) {
+        ctx.strokeStyle = "rgba(190,205,225," + d.o + ")";
+        ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - 2, d.y + d.l); ctx.stroke();
+        d.y += d.v; d.x -= 0.5;
+        if (d.y > this.rainH) { d.y = -d.l; d.x = Math.random() * this.rainW; }
+      }
+    });
+  }
+
+  /** rAF loop that pauses when el is offscreen */
+  loop(el, fn) {
+    const rec = { visible: true, id: 0 };
+    const tick = () => {
+      if (this._dead) return;
+      if (rec.visible) fn();
+      rec.id = requestAnimationFrame(tick);
+    };
+    rec.id = requestAnimationFrame(tick);
+    this._loops.push(rec);
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver((e) => { rec.visible = e[0].isIntersecting; }, { rootMargin: "120px" }).observe(el);
+    }
+  }
+
+  progressOf(el) {
+    const r = el.getBoundingClientRect();
+    const span = Math.max(1, r.height - window.innerHeight);
+    return Math.max(0, Math.min(1, -r.top / span));
+  }
+
+  /* ---------- three.js ---------- */
+
+  renderer(T, canvas, opts) {
+    const rn = new T.WebGLRenderer({ canvas: canvas, antialias: !this.mobile, alpha: true, powerPreference: "high-performance" });
+    rn.setPixelRatio(Math.min(this.mobile ? 1.5 : 2, window.devicePixelRatio || 1));
+    if (opts && opts.shadows && !this.mobile) { rn.shadowMap.enabled = true; rn.shadowMap.type = T.PCFSoftShadowMap; }
+    rn.outputEncoding = T.sRGBEncoding;
+    const scene = new T.Scene();
+    const cam = new T.PerspectiveCamera(38, 1, 0.1, 200);
+    const fit = () => {
+      const r = canvas.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      rn.setSize(r.width, r.height, false);
+      cam.aspect = r.width / r.height; cam.updateProjectionMatrix();
+    };
+    fit();
+    window.addEventListener("resize", fit, { passive: true });
+    return { rn: rn, scene: scene, cam: cam, fit: fit };
+  }
+
+  shingleTex(T, base, alt) {
+    const c = document.createElement("canvas");
+    c.width = 512; c.height = 512;
+    const x = c.getContext("2d");
+    x.fillStyle = base; x.fillRect(0, 0, 512, 512);
+    const rows = 12, rh = 512 / rows, tw = 512 / 8;
+    for (let r = 0; r < rows; r++) {
+      const off = (r % 2) * (tw / 2);
+      for (let i = -1; i < 9; i++) {
+        const v = 0.82 + Math.random() * 0.36;
+        x.fillStyle = i % 2 ? this.shade(base, v) : this.shade(alt, v);
+        x.fillRect(i * tw + off + 1, r * rh + 1, tw - 2, rh - 3);
+      }
+      x.fillStyle = "rgba(0,0,0,0.5)";
+      x.fillRect(0, r * rh + rh - 3, 512, 3);
+    }
+    const t = new T.CanvasTexture(c);
+    t.wrapS = t.wrapT = T.RepeatWrapping;
+    return t;
+  }
+
+  shade(hex, f) {
+    const n = parseInt(hex.slice(1), 16);
+    const r = Math.min(255, ((n >> 16) & 255) * f) | 0;
+    const g = Math.min(255, ((n >> 8) & 255) * f) | 0;
+    const b = Math.min(255, (n & 255) * f) | 0;
+    return "rgb(" + r + "," + g + "," + b + ")";
+  }
+
+  buildHouse(T, tex) {
+    const g = new T.Group();
+    const wall = new T.MeshStandardMaterial({ color: 0x3a352f, roughness: 0.9, metalness: 0.02 });
+    const trim = new T.MeshStandardMaterial({ color: 0x22201d, roughness: 0.7 });
+    const glass = new T.MeshStandardMaterial({ color: 0xffc98a, emissive: 0xff9d4d, emissiveIntensity: 1.1, roughness: 0.3 });
+    const roofMat = new T.MeshStandardMaterial({ map: tex, roughness: 0.78, metalness: 0.06, color: 0xffffff });
+    tex.repeat.set(3, 2);
+
+    const body = new T.Mesh(new T.BoxGeometry(4.2, 2.1, 3.1), wall);
+    body.position.y = 1.05; body.castShadow = true; body.receiveShadow = true; g.add(body);
+
+    const a = 0.56, half = 2.1, len = half / Math.cos(a) + 0.42;
+    for (const s of [1, -1]) {
+      const slab = new T.Mesh(new T.BoxGeometry(len, 0.17, 3.5), roofMat);
+      slab.position.set(s * (half / 2 + 0.06), 2.1 + (Math.tan(a) * half) / 2, 0);
+      slab.rotation.z = -s * a;
+      slab.castShadow = true; slab.receiveShadow = true;
+      g.add(slab);
+    }
+    const gable = new T.Shape();
+    gable.moveTo(-half, 0); gable.lineTo(half, 0); gable.lineTo(0, Math.tan(a) * half); gable.lineTo(-half, 0);
+    for (const z of [1.54, -1.54]) {
+      const m = new T.Mesh(new T.ExtrudeGeometry(gable, { depth: 0.06, bevelEnabled: false }), wall);
+      m.position.set(0, 2.1, z - (z > 0 ? 0 : 0.06));
+      g.add(m);
+    }
+
+    const garage = new T.Mesh(new T.BoxGeometry(1.9, 1.45, 1.9), wall);
+    garage.position.set(2.6, 0.72, 0.8); garage.castShadow = true; g.add(garage);
+    const gr = new T.Mesh(new T.BoxGeometry(2.2, 0.14, 2.2), roofMat);
+    gr.position.set(2.6, 1.5, 0.8); gr.rotation.z = -0.14; gr.castShadow = true; g.add(gr);
+    const gdoor = new T.Mesh(new T.BoxGeometry(1.4, 1.0, 0.06), trim);
+    gdoor.position.set(2.6, 0.52, 1.78); g.add(gdoor);
+
+    const chim = new T.Mesh(new T.BoxGeometry(0.44, 1.5, 0.44), trim);
+    chim.position.set(-1.1, 3.0, 0.5); chim.castShadow = true; g.add(chim);
+
+    const winPos = [[-1.2, 1.25, 1.57], [0.0, 1.25, 1.57], [1.2, 1.25, 1.57], [-2.12, 1.2, 0.5], [-2.12, 1.2, -0.6]];
+    winPos.forEach((p, i) => {
+      const w = new T.Mesh(new T.BoxGeometry(i > 2 ? 0.06 : 0.62, 0.78, i > 2 ? 0.62 : 0.06), glass);
+      w.position.set(p[0], p[1], p[2]); g.add(w);
+    });
+    const door = new T.Mesh(new T.BoxGeometry(0.66, 1.26, 0.08), new T.MeshStandardMaterial({ color: 0x8a4a24, roughness: 0.55 }));
+    door.position.set(0.62, 0.63, 1.57); g.add(door);
+
+    const ground = new T.Mesh(new T.CircleGeometry(16, 48), new T.MeshStandardMaterial({ color: 0x121212, roughness: 1 }));
+    ground.rotation.x = -Math.PI / 2; ground.position.y = -0.001; ground.receiveShadow = true; g.add(ground);
+    return g;
+  }
+
+  lights(T, scene, warm) {
+    scene.add(new T.HemisphereLight(warm ? 0x4a3a2c : 0x2a3340, 0x080808, warm ? 0.9 : 0.6));
+    const key = new T.DirectionalLight(warm ? 0xffb877 : 0xfff0dd, warm ? 2.1 : 1.7);
+    key.position.set(6, 9, 5);
+    if (!this.mobile) {
+      key.castShadow = true;
+      key.shadow.mapSize.set(1024, 1024);
+      key.shadow.camera.near = 1; key.shadow.camera.far = 40;
+      key.shadow.camera.left = -12; key.shadow.camera.right = 12;
+      key.shadow.camera.top = 12; key.shadow.camera.bottom = -12;
+      key.shadow.bias = -0.0012;
+    }
+    scene.add(key);
+    const rim = new T.DirectionalLight(0xc0703c, 1.25);
+    rim.position.set(-7, 4, -6); scene.add(rim);
+    const fill = new T.DirectionalLight(0x6c7d94, 0.5);
+    fill.position.set(-3, 2, 7); scene.add(fill);
+    return key;
+  }
+
+  init3D(T) {
+    this.initHero(T);
+    this.initRoof(T);
+    this.initNail(T);
+    this.initFinal(T);
+  }
+
+  initHero(T) {
+    const c = document.getElementById("ars-hero");
+    if (!c) return;
+    const ctx = this.renderer(T, c, { shadows: true });
+    const tex = this.shingleTex(T, "#4a4340", "#332e2b");
+    const house = this.buildHouse(T, tex);
+    const pivot = new T.Group();
+    pivot.add(house);
+    house.position.y = -1.1;
+    ctx.scene.add(pivot);
+    ctx.scene.fog = new T.Fog(0x0a0a0b, 14, 34);
+    this.lights(T, ctx.scene, false);
+    ctx.cam.position.set(6.4, 3.4, 8.6);
+    ctx.cam.lookAt(0, 0.4, 0);
+
+    const floaters = new T.Group();
+    const n = this.mobile ? 5 : 11;
+    const shTex = this.shingleTex(T, "#5a4f47", "#3a332e");
+    const metal = new T.MeshStandardMaterial({ color: 0xbcc2c8, metalness: 1, roughness: 0.28 });
+    const blue = new T.MeshBasicMaterial({ color: 0x4b6f92, transparent: true, opacity: 0.34, side: T.DoubleSide });
+    for (let i = 0; i < n; i++) {
+      let m;
+      const k = i % 3;
+      if (k === 0) {
+        m = new T.Mesh(new T.BoxGeometry(1.0, 0.06, 0.55), new T.MeshStandardMaterial({ map: shTex, roughness: 0.8 }));
+      } else if (k === 1) {
+        m = new T.Group();
+        const shaft = new T.Mesh(new T.CylinderGeometry(0.035, 0.02, 0.6, 10), metal);
+        const head = new T.Mesh(new T.CylinderGeometry(0.1, 0.1, 0.035, 12), metal);
+        head.position.y = 0.3; m.add(shaft); m.add(head);
+      } else {
+        m = new T.Mesh(new T.PlaneGeometry(0.9, 0.62), blue);
+      }
+      m.position.set((Math.random() - 0.5) * 13, 0.6 + Math.random() * 5.6, (Math.random() - 0.5) * 8 + 1);
+      m.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3);
+      m.userData = { s: 0.25 + Math.random() * 0.7, p: Math.random() * 6.28, y0: m.position.y, rx: (Math.random() - 0.5) * 0.006, ry: (Math.random() - 0.5) * 0.008 };
+      floaters.add(m);
+    }
+    ctx.scene.add(floaters);
+
+    let t = 0;
+    this.loop(c, () => {
+      t += 0.0125;
+      this.mouse.x += (this.mouse.tx - this.mouse.x) * 0.045;
+      this.mouse.y += (this.mouse.ty - this.mouse.y) * 0.045;
+      pivot.rotation.y = -0.42 + this.mouse.x * 0.42 + (this.reduced ? 0 : t * 0.035);
+      pivot.rotation.x = this.mouse.y * 0.06;
+      floaters.children.forEach((m) => {
+        const u = m.userData;
+        m.position.y = u.y0 + Math.sin(t * u.s + u.p) * 0.42;
+        m.rotation.x += u.rx; m.rotation.y += u.ry;
+      });
+      floaters.position.x = -this.mouse.x * 1.1;
+      floaters.position.y = -this.mouse.y * 0.6;
+      ctx.rn.render(ctx.scene, ctx.cam);
+    });
+  }
+
+  initRoof(T) {
+    const c = document.getElementById("ars-roof");
+    const sec = document.getElementById("ars-roof-sec");
+    if (!c || !sec) return;
+    const ctx = this.renderer(T, c, { shadows: true });
+    this.lights(T, ctx.scene, false);
+    ctx.cam.position.set(0, 3.6, 9.2);
+
+    const tex = this.shingleTex(T, "#4e4642", "#332e2b");
+    tex.repeat.set(2.4, 1.3);
+    const stack = new T.Group();
+    const W = 6.2, D = 4.0;
+    const mats = [
+      new T.MeshStandardMaterial({ map: tex, roughness: 0.8 }),
+      new T.MeshStandardMaterial({ color: 0x1d2a33, roughness: 0.55, metalness: 0.1 }),
+      new T.MeshStandardMaterial({ color: 0x9a7448, roughness: 0.92 }),
+      new T.MeshStandardMaterial({ color: 0x2a2724, roughness: 0.7 })
+    ];
+    const layers = [];
+    [0.16, 0.07, 0.22, 0.05].forEach((h, i) => {
+      const m = new T.Mesh(new T.BoxGeometry(W, h, D), mats[i]);
+      m.castShadow = true; m.receiveShadow = true;
+      m.userData.base = -i * 0.34;
+      m.position.y = m.userData.base;
+      stack.add(m); layers.push(m);
+    });
+    const nails = new T.Group();
+    const metal = new T.MeshStandardMaterial({ color: 0xc3c9cf, metalness: 1, roughness: 0.22 });
+    for (let x = -2; x <= 2; x++) {
+      for (let z = -1; z <= 1; z++) {
+        const nl = new T.Mesh(new T.CylinderGeometry(0.045, 0.025, 0.42, 10), metal);
+        nl.position.set(x * 1.25, 0, z * 1.35);
+        nails.add(nl);
+        const hd = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 0.04, 12), metal);
+        hd.position.set(x * 1.25, 0.21, z * 1.35);
+        nails.add(hd);
+      }
+    }
+    nails.userData.base = -3 * 0.34;
+    stack.add(nails);
+    stack.rotation.x = 0.16;
+    ctx.scene.add(stack);
+
+    const cards = [0, 1, 2, 3].map((i) => document.getElementById("ars-layer-" + i));
+    let active = -1;
+    const setActive = (i) => {
+      if (i === active) return;
+      active = i;
+      cards.forEach((el, k) => {
+        if (!el) return;
+        el.style.background = k === i ? "rgba(192,112,60,0.16)" : "rgba(12,12,13,0.78)";
+        el.style.transform = k === i ? "translateY(-6px)" : "none";
+      });
+    };
+
+    let p = 0, tp = 0;
+    this._scroll.push(() => { tp = this.progressOf(sec); });
+    tp = this.progressOf(sec);
+
+    this.loop(c, () => {
+      p += (tp - p) * 0.08;
+      const sep = p * 1.55;
+      layers.forEach((m, i) => { m.position.y = m.userData.base + (3 - i) * sep * 0.55; });
+      nails.position.y = nails.userData.base - sep * 0.2;
+      nails.children.forEach((n2, i) => { n2.position.y = (i % 2 ? 0.21 : 0) + Math.sin(p * 3 + i) * 0.04; });
+      stack.rotation.y = -0.5 + p * 1.15;
+      stack.rotation.x = 0.16 + p * 0.1;
+      ctx.cam.position.set(Math.sin(p * 0.5) * 2.2, 2.6 + p * 2.4, 9.6 - p * 1.4);
+      ctx.cam.lookAt(0, -0.6 + p * 0.5, 0);
+      setActive(Math.max(0, Math.min(3, Math.floor(p * 4.0))));
+      ctx.rn.render(ctx.scene, ctx.cam);
+    });
+  }
+
+  initNail(T) {
+    const c = document.getElementById("ars-nail");
+    const sec = document.getElementById("ars-nail-sec");
+    if (!c || !sec) return;
+    const ctx = this.renderer(T, c, {});
+    ctx.cam.position.set(0, 0.4, 7.6);
+    ctx.scene.add(new T.HemisphereLight(0x22262c, 0x000000, 0.7));
+    const l1 = new T.PointLight(0xffd9b0, 90, 40); l1.position.set(4, 5, 6); ctx.scene.add(l1);
+    const l2 = new T.PointLight(0xc0703c, 70, 40); l2.position.set(-5, -2, 4); ctx.scene.add(l2);
+    const l3 = new T.DirectionalLight(0xffffff, 1.1); l3.position.set(-2, 6, -4); ctx.scene.add(l3);
+
+    const metal = new T.MeshStandardMaterial({ color: 0xd7dce1, metalness: 1, roughness: 0.16 });
+    const nail = new T.Group();
+    const shaft = new T.Mesh(new T.CylinderGeometry(0.19, 0.19, 3.4, 40), metal);
+    const tip = new T.Mesh(new T.ConeGeometry(0.19, 0.7, 40), metal);
+    tip.position.y = -2.05;
+    const head = new T.Mesh(new T.CylinderGeometry(0.52, 0.5, 0.14, 44), metal);
+    head.position.y = 1.76;
+    const ring = new T.Mesh(new T.TorusGeometry(0.24, 0.028, 8, 40), metal);
+    ring.rotation.x = Math.PI / 2; ring.position.y = 1.2;
+    nail.add(shaft); nail.add(tip); nail.add(head); nail.add(ring);
+    nail.position.x = this.mobile ? 0 : 3.1;
+    ctx.scene.add(nail);
+
+    const surfTex = this.shingleTex(T, "#4a423d", "#302b28");
+    surfTex.repeat.set(4, 3);
+    const surf = new T.Mesh(new T.PlaneGeometry(14, 9), new T.MeshStandardMaterial({ map: surfTex, roughness: 0.85 }));
+    surf.rotation.x = -Math.PI / 2.35;
+    surf.position.set(0, -6.4, -1);
+    ctx.scene.add(surf);
+
+    let p = 0, tp = 0;
+    this._scroll.push(() => { tp = this.progressOf(sec); });
+    tp = this.progressOf(sec);
+    let t = 0;
+    this.loop(c, () => {
+      t += 0.01;
+      p += (tp - p) * 0.08;
+      nail.rotation.y = t * 0.9 + p * 2.2;
+      nail.rotation.z = 0.16 - p * 0.16;
+      nail.position.y = 1.4 - p * 3.0;
+      nail.scale.setScalar(1 - p * 0.24);
+      surf.position.y = -6.4 + p * 3.1;
+      ctx.cam.position.set(this.mouse.x * 0.7, 0.6 - p * 0.9, 7.6 - p * 1.5);
+      ctx.cam.lookAt(nail.position.x * 0.5, 0.2 - p * 1.4, 0);
+      ctx.rn.render(ctx.scene, ctx.cam);
+    });
+  }
+
+  initFinal(T) {
+    const c = document.getElementById("ars-final");
+    if (!c) return;
+    const ctx = this.renderer(T, c, { shadows: true });
+    const tex = this.shingleTex(T, "#57483d", "#3a2f28");
+    const house = this.buildHouse(T, tex);
+    house.position.set(1.6, -1.6, 0);
+    const pivot = new T.Group(); pivot.add(house);
+    ctx.scene.add(pivot);
+    ctx.scene.fog = new T.Fog(0x0a0a0b, 10, 26);
+    this.lights(T, ctx.scene, true);
+    ctx.cam.position.set(4.0, 2.0, 5.6);
+    ctx.cam.lookAt(1.2, 1.2, 0);
+    let t = 0;
+    this.loop(c, () => {
+      t += 0.006;
+      pivot.rotation.y = -0.7 + Math.sin(t) * 0.13 + this.mouse.x * 0.13;
+      ctx.cam.position.y = 2.0 + Math.sin(t * 1.4) * 0.12 - this.mouse.y * 0.25;
+      ctx.cam.lookAt(1.2, 1.2, 0);
+      ctx.rn.render(ctx.scene, ctx.cam);
+    });
+  }
+}
+</script>
+</body>
+</html>
